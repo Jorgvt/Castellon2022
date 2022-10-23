@@ -1,0 +1,297 @@
+---
+title: "Research journey: Where are we? Where do we want to go?"
+author: "Jorge Vila Tomás"
+format: 
+    revealjs:
+        logo: Media/two_logos.png
+        theme: default
+        highlight-style: ayu
+---
+
+# Introducing functional forms in CNNs: Gabor, Gaussian & Center-Surround
+
+# Why are we doing this?
+
+:::{.incremental}
+- We think it makes sense.
+- Reduction in the number of parameters.
+- Instead of hoping that human-behavior arises, impose it.
+:::
+
+# Chosen functional forms?
+
+## Gaussian-like filters {.smaller}
+
+$$
+G(x,y) = A e^{-\left(
+                \frac{(x-x_0)^2}{2\sigma_x^2} + 
+                \frac{(y-y_0)^2}{2\sigma_y^2}
+                \right)}
+$$
+
+::::{.panel-tabset}
+
+### Info
+
+:::{.callout-caution collapse="true"}
+# Not all the parameters can take all values.
+By definition, $\sigma_x$ and $\sigma_y$ must be different from 0. 
+:::
+
+```{python}
+#| fig-cap-location: margin
+#| fig-cap: Sample gaussian filters used by our layer.
+import matplotlib.pyplot as plt
+from flayers.center_surround import GaussianLayer
+
+filters = 4
+sigma_i = [0.1, 0.2, 0.3, 0.4]
+sigma_j = [0.1, 0.2, 0.3, 0.4]
+freq = [10, 20, 30, 40]
+theta = [0, 45, 90, 135]
+rot_theta = [0, 45, 90, 135]
+sigma_theta = [0, 45, 90, 135]
+
+gaussianlayer = GaussianLayer(filters=filters, size=20, imean=0.5, jmean=0.5, sigma_i=sigma_i, sigma_j=sigma_j, freq=freq,  rot_theta=rot_theta, sigma_theta=sigma_theta, fs=20)
+gaussianlayer.show_filters(show=False)
+#for ax in plt.gca(): ax.axis("off")
+plt.gcf().set_size_inches(2,2)
+plt.show()
+```
+
+### Code
+
+```{.python code-line-numbers="|4,8"}
+def gaussian_2d_tf(i, j, imean, jmean, sigma_i, sigma_j, sigma_theta):
+    sigma_vector = tf.convert_to_tensor([sigma_i, sigma_j])
+    cov_matrix = tf.linalg.diag(sigma_vector)**2
+    det_cov_matrix = tf.linalg.det(cov_matrix)
+    constant = tf.convert_to_tensor((1/(2*PI*tf.sqrt(det_cov_matrix))))
+    rotation_matrix = tf.convert_to_tensor([[tf.cos(sigma_theta), -tf.sin(sigma_theta)],
+                                            [tf.sin(sigma_theta), tf.cos(sigma_theta)]])
+    rotated_covariance = tf.cast(rotation_matrix @ tf.linalg.inv(cov_matrix) @ tf.transpose(rotation_matrix), tf.float32)
+
+    x_r_1 = rotated_covariance[0,0] * i + rotated_covariance[0,1] * j
+    y_r_1 = rotated_covariance[1,0] * i + rotated_covariance[1,1] * j
+
+    distance = i * x_r_1 + j * y_r_1
+
+    gaussian = constant * tf.exp(-distance/2)
+    return gaussian
+```
+
+::::
+
+## Gabor filters {.smaller}
+
+$$
+G(x,y) = A e^{-\left(
+                \frac{(x-x_0)^2}{2\sigma_x^2} + 
+                \frac{(y-y_0)^2}{2\sigma_y^2}
+                \right)}
+         \mathrm{cos}\left(
+                           2\pi f \left(
+                                    x\mathrm{cos}(\theta) + y\mathrm{sin}(\theta)
+                                  \right)
+                     \right)
+$$
+
+::::{.panel-tabset}
+
+### Info
+
+:::{.callout-caution collapse="true"}
+# Not all the parameters can take all values.
+By definition, $\sigma_x$ and $\sigma_y$ must be different from 0. 
+:::
+
+```{python}
+#| fig-cap-location: margin
+#| fig-cap: Sample gabor filters used by our layer.
+from flayers.layers import GaborLayer
+
+n_gabors = 4
+sigma_i = [0.1, 0.2, 0.3, 0.4]
+sigma_j = [0.1, 0.2, 0.3, 0.4]
+freq = [10, 20, 30, 40]
+theta = [0, 45, 90, 135]
+rot_theta = [0, 45, 90, 135]
+sigma_theta = [0, 45, 90, 135]
+
+gaborlayer = GaborLayer(n_gabors=n_gabors, size=20, imean=0.5, jmean=0.5, sigma_i=sigma_i, sigma_j=sigma_j, freq=freq, 
+                        theta=theta, rot_theta=rot_theta, sigma_theta=sigma_theta, fs=20)
+gaborlayer.show_filters(show=False)
+#for ax in plt.gca(): ax.axis("off")
+plt.gcf().set_size_inches(2,2)
+plt.show()
+```
+
+### Code
+
+```{.python code-line-numbers="|15"}
+def gabor_2d_tf(i, j, imean, jmean, sigma_i, sigma_j, freq, theta,sigma_theta):
+    sigma_vector = tf.convert_to_tensor([sigma_i, sigma_j])
+    cov_matrix = tf.linalg.diag(sigma_vector)**2
+    det_cov_matrix = tf.linalg.det(cov_matrix)
+    constant = tf.convert_to_tensor((1/(2*PI*tf.sqrt(det_cov_matrix))))
+    rotation_matrix = tf.convert_to_tensor([[tf.cos(sigma_theta), -tf.sin(sigma_theta)],
+                                            [tf.sin(sigma_theta), tf.cos(sigma_theta)]])
+    rotated_covariance = tf.cast(rotation_matrix @ tf.linalg.inv(cov_matrix) @ tf.transpose(rotation_matrix), tf.float32)
+
+    x_r_1 = rotated_covariance[0,0] * i + rotated_covariance[0,1] * j
+    y_r_1 = rotated_covariance[1,0] * i + rotated_covariance[1,1] * j
+
+    distance = i * x_r_1 + j * y_r_1
+
+    gabor = constant * tf.exp(-distance/2) * tf.cos(2*3.14*freq*(i*tf.cos(theta)+j*tf.sin(theta)))
+    return gabor
+```
+
+::::
+
+## Center-surround filters
+
+Placeholder
+
+# PerceptNet
+
+## Ablation study
+
+![Validation Pearson Correlation on TID2013 for different network configurations.](Media/val_loss_perceptnet_2.svg)
+
+# Optimization problems
+
+## `NaN` during training
+```{mermaid}
+flowchart LR
+  A[The output of the layer becomes NaN] --> B[The loss becomes NaN]
+  B --> C[The parameters become NaN]
+```
+
+### Solution
+
+Optimize for $\mathrm{log}(\sigma)$ instead of $\sigma$.
+
+```{python}
+#| fig-cap-location: margin
+#| fig-cap: (On the left) The log is defined for all $\mathcal{R}$. (On the right) When obtaining $\sigma$ again, it's defined positive.
+import numpy as np
+import matplotlib.pyplot as plt
+
+sigma = np.linspace(0,5,50)
+fig, axes = plt.subplots(1, 2, figsize=(9,2))
+axes[0].plot(sigma, np.log(sigma))
+axes[0].set_xlabel("$\sigma$")
+axes[0].set_ylabel("$\mathrm{log}\sigma$")
+axes[1].plot(np.log(sigma), np.exp(np.log(sigma)))
+plt.show()
+```
+
+## Negative values in the GDN {.smaller}
+
+$$
+GDN(inputs) = \frac{inputs}{\sqrt{\mathrm{conv}(inputs^2)}}
+$$
+
+::: {.incremental}
+- If the convolutional kernel is gaussian, it must be $\geq 0$.
+- $inputs^2 \geq 0$.
+- Thus, $\sqrt{\mathrm{conv}(inputs^2)} \geq 0$.
+- But computational problems (?) were producing $-0$.
+:::
+
+. . .
+
+### Solution
+
+```{.python code-line-numbers="|7" code-overflow="scroll"}
+def call(self,
+             X,
+             training=False,
+             ):
+        norm = tf.math.pow(X, self.alpha)
+        norm = self.layer(norm, training=training)
+        norm = tf.clip_by_value(norm, clip_value_min=1e-5, clip_value_max=tf.reduce_max(norm))
+        norm = tf.math.pow(norm, self.epsilon)
+        return X / norm
+```
+
+# Style transfer with CycleGAN
+
+> Turn synthetic data into real-like data to increase the available data to train segmentation models.
+
+## What is a CycleGAN and how does it work?
+
+![CycleGAN diagram.](Media/CycleGAN_Diagram.png)
+
+## Examples
+
+:::: {.columns}
+
+::: {.column width="33%"}
+![Space Transformation](Media/CycleGAN_space_transform.jpeg)
+:::
+
+::: {.column width="33%"}
+![Cycle Consistency](Media/CycleGAN_cycle.jpeg)
+:::
+
+::: {.column width="33%"}
+![Identity](Media/CycleGAN_identity.jpeg)
+:::
+
+::::
+
+[HuggingFace Space](https://huggingface.co/spaces/Jorgvt/CycleGAN-GTA-REAL){preview-link="true"}
+
+## How are we testing our approach
+
+1. Train a CycleGAN to transform between CityScapes and GTA.
+2. Evaluate ^[The evaluation metric is the IoU (Intersection over Unit).] a segmentation model (trained on CityScapes) on GTA.
+3. Transform the GTA images into CityScapes and evaluate the same model.
+4. We expect that a good transformation translates into a better result.
+
+## Our results so far
+
+Our current method doesn't improve the results:
+
+- Without CycleGAN: $IoU = 0.40$.
+- With CycleGAN: $IoU = 0.34$.
+
+![Sample results with and without applying the CycleGAN's transformation.](Media/CycleGAN_results.jpeg)
+
+## What others have achieved
+
+[Enhancing Photorealism Enhancement](https://isl-org.github.io/PhotorealismEnhancement/){preview-link="true"}
+
+# Hue cancellation: Debunking Jameson-Hurvich
+
+## Hue cancellation experiment
+
+An user is shown two colored surfaces that can be controlled with a set of knobs. These knobs change the perceived color of the surfaces. The user must use the knobs to modify the surfaces until they become of equal hue.
+
+:::: {.columns}
+
+::: {.column width="50%"}
+![Initial setup of an experiment.](Media/hue_cancellation_initial.png)
+:::
+
+::: {.column width="50%"}
+![Final result of the experiment for an Identity Network.](Media/hue_cancellation_final.png)
+:::
+
+::::
+
+## Classic interpretation
+
+Usually considered as the first psychophysical quantification on opponent color coding in the human brain.
+
+## Our findings
+
+Using an Identity Network ^[Model whose output is its input, i.e. doesn't do anything] we were able to obtain the same results.
+
+![Our results with the Identity Network](Media/hue_cancellation_results.jpeg){width="35%" fig-cap-location="margin"}
+
+## What do we think this means?
+
+The color coding is **not** done in the brain, and the experiment doesn't provide any insight about the brain itself.
