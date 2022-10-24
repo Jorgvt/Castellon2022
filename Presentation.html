@@ -5,9 +5,9 @@
 <script src="Presentation_files/libs/quarto-html/popper.min.js"></script>
 <script src="Presentation_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="Presentation_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="Presentation_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="Presentation_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet">
 <link href="Presentation_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.0.37">
+  <meta name="generator" content="quarto-0.9.612">
 
   <meta name="author" content="Jorge Vila Tomás">
   <title>Research journey: Where are we? Where do we want to go?</title>
@@ -381,7 +381,7 @@
   <script src="Presentation_files/libs/quarto-diagram/mermaid-init.js"></script>
   <link href="Presentation_files/libs/quarto-diagram/mermaid.css" rel="stylesheet">
 </head>
-<body class="quarto-light">
+<body>
   <div class="reveal">
     <div class="slides">
 
@@ -441,7 +441,7 @@ G(x,y) = A e^{-\left(
 <div class="quarto-figure quarto-figure-center margin-caption">
 <figure>
 <p><img data-src="Presentation_files/figure-revealjs/cell-2-output-1.png" class="margin-caption" width="193" height="190"></p>
-<p></p><figcaption>Sample gaussian filters used by our layer.</figcaption><p></p>
+<p></p><figcaption aria-hidden="true">Sample gaussian filters used by our layer.</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -503,7 +503,7 @@ G(x,y) = A e^{-\left(
 <div class="quarto-figure quarto-figure-center margin-caption">
 <figure>
 <p><img data-src="Presentation_files/figure-revealjs/cell-3-output-1.png" class="margin-caption" width="193" height="190"></p>
-<p></p><figcaption>Sample gabor filters used by our layer.</figcaption><p></p>
+<p></p><figcaption aria-hidden="true">Sample gabor filters used by our layer.</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -537,12 +537,143 @@ G(x,y) = A e^{-\left(
 <section>
 <section id="perceptnet" class="title-slide slide level1 center">
 <h1>PerceptNet</h1>
-
+<blockquote>
+<p>Fully convolutional bio-inspired network replicating the Retina - LGN - V1 path.</p>
+</blockquote>
 </section>
+<section id="refresher" class="slide level2">
+<h2>Refresher</h2>
+<p>Fully convolutional bio-inspired network replicating the Retina - LGN - V1 path.</p>
+
+<img data-src="Media/PerceptNet_Architecture.jpg" class="r-stretch quarto-figure-center"><p class="caption">PerceptNet Architecture.</p></section>
+<section id="including-functional-forms" class="slide level2">
+<h2>Including functional forms</h2>
+
+<img data-src="Media/PerceptNet_Architecture_Functional.jpg" class="r-stretch quarto-figure-center"><p class="caption">Functional PerceptNet Architecture.</p></section>
 <section id="ablation-study" class="slide level2">
 <h2>Ablation study</h2>
 
-<img data-src="Media/val_loss_perceptnet_2.svg" class="r-stretch quarto-figure-center"><p class="caption">Validation Pearson Correlation on TID2013 for different network configurations.</p></section></section>
+<img data-src="Media/val_loss_perceptnet_2.svg" class="r-stretch quarto-figure-center"><p class="caption">Validation Pearson Correlation on TID2013 for different network configurations.</p></section>
+<section id="filters-evolution" class="slide level2">
+<h2>Filters evolution</h2>
+<h3 id="gdn-gaussians-first-gdn">GDN Gaussians (First GDN)</h3>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="Media/Filters_Evolution/GDNGaussian/first_init.png"></p>
+<p></p><figcaption aria-hidden="true">First GDN (init)</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="Media/Filters_Evolution/GDNGaussian/first_last.png"></p>
+<p></p><figcaption aria-hidden="true">First GDN (trained)</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="filters-evolution-1" class="slide level2">
+<h2>Filters evolution</h2>
+<h3 id="gdn-gaussians-second-gdn">GDN Gaussians (Second GDN)</h3>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="Media/Filters_Evolution/GDNGaussian/second_init.png"></p>
+<p></p><figcaption aria-hidden="true">Second GDN (init)</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="Media/Filters_Evolution/GDNGaussian/second_last.png"></p>
+<p></p><figcaption aria-hidden="true">Second GDN (trained)</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="filters-evolution-2" class="slide level2">
+<h2>Filters evolution</h2>
+<h3 id="gdn-gaussians-third-gdn">GDN Gaussians (Third GDN)</h3>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="Media/Filters_Evolution/GDNGaussian/third_init.png"></p>
+<p></p><figcaption aria-hidden="true">Third GDN (init)</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="Media/Filters_Evolution/GDNGaussian/third_last.png"></p>
+<p></p><figcaption aria-hidden="true">Third GDN (trained)</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="filters-evolution-3" class="slide level2">
+<h2>Filters evolution</h2>
+<h3 id="gdn-gaussians-fourth-gdn">GDN Gaussians (Fourth GDN)</h3>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="Media/Filters_Evolution/GDNGaussian/fourth_init.png"></p>
+<p></p><figcaption aria-hidden="true">Fourth GDN (init)</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="Media/Filters_Evolution/GDNGaussian/fourth_last.png"></p>
+<p></p><figcaption aria-hidden="true">Fourth GDN (trained)</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="filters-evolution-4" class="slide level2">
+<h2>Filters evolution</h2>
+<h3 id="gabor-filters-1">Gabor Filters</h3>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="Media/Filters_Evolution/PseudoRandomGaborLast/fourth_init.png"></p>
+<p></p><figcaption aria-hidden="true">Gabor Layer (init)</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="Media/Filters_Evolution/PseudoRandomGaborLast/fourth_last.png"></p>
+<p></p><figcaption aria-hidden="true">Gabor (trained)</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section></section>
 <section>
 <section id="optimization-problems" class="title-slide slide level1 center">
 <h1>Optimization problems</h1>
@@ -567,13 +698,23 @@ G(x,y) = A e^{-\left(
 </div>
 <h3 id="solution">Solution</h3>
 <p>Optimize for <span class="math inline">\(\mathrm{log}(\sigma)\)</span> instead of <span class="math inline">\(\sigma\)</span>.</p>
-<div class="cell" data-execution_count="3">
-<div class="cell-output cell-output-display">
-<div class="quarto-figure quarto-figure-center margin-caption">
+<div class="cell fig-cap-location-margin quarto-layout-panel" data-execution_count="3">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 50.8%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="Presentation_files/figure-revealjs/cell-4-output-1.png" class="margin-caption" width="738" height="205"></p>
-<p></p><figcaption>(On the left) The log is defined for all <span class="math inline">\(\mathcal{R}\)</span>. (On the right) When obtaining <span class="math inline">\(\sigma\)</span> again, it’s defined positive.</figcaption><p></p>
+<p><img data-src="Presentation_files/figure-revealjs/cell-4-output-1.png" width="441"></p>
+<p></p><figcaption aria-hidden="true">a) “The log is defined for all R.”</figcaption><p></p>
 </figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 49.2%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="Presentation_files/figure-revealjs/cell-4-output-2.png" width="427"></p>
+<p></p><figcaption aria-hidden="true">b) “When obtaining sigma again, it’s defined positive.”</figcaption><p></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
@@ -614,7 +755,7 @@ GDN(inputs) = \frac{inputs}{\sqrt{\mathrm{conv}(inputs^2)}}
 <section id="what-is-a-cyclegan-and-how-does-it-work" class="slide level2">
 <h2>What is a CycleGAN and how does it work?</h2>
 
-<img data-src="Media/CycleGAN_Diagram.png" class="r-stretch quarto-figure-center"><p class="caption">CycleGAN diagram.</p></section>
+<img data-src="Media/CycleGAN_Diagram.png" class="r-stretch quarto-figure-center"><p class="caption">CycleGAN diagram. Identity Loss is not shown but has to be added as well.</p></section>
 <section id="examples" class="slide level2">
 <h2>Examples</h2>
 <div class="columns">
@@ -622,27 +763,42 @@ GDN(inputs) = \frac{inputs}{\sqrt{\mathrm{conv}(inputs^2)}}
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="Media/CycleGAN_space_transform.jpeg"></p>
-<p></p><figcaption>Space Transformation</figcaption><p></p>
+<p></p><figcaption aria-hidden="true">Space Transformation</figcaption><p></p>
 </figure>
 </div>
 </div><div class="column" style="width:33%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="Media/CycleGAN_cycle.jpeg"></p>
-<p></p><figcaption>Cycle Consistency</figcaption><p></p>
+<p></p><figcaption aria-hidden="true">Cycle Consistency</figcaption><p></p>
 </figure>
 </div>
 </div><div class="column" style="width:33%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="Media/CycleGAN_identity.jpeg"></p>
-<p></p><figcaption>Identity</figcaption><p></p>
+<p></p><figcaption aria-hidden="true">Identity</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
 <p><a href="https://huggingface.co/spaces/Jorgvt/CycleGAN-GTA-REAL" data-preview-link="true">HuggingFace Space</a></p>
 </section>
+<section id="examples-1" class="slide level2">
+<h2>Examples</h2>
+<h3 id="space-transformation">Space Transformation</h3>
+
+<img data-src="Media/CycleGAN_space_transform.jpeg" class="r-stretch quarto-figure-center"><p class="caption">Space Transformation (Transforming from A ↔︎ B).</p></section>
+<section id="examples-2" class="slide level2">
+<h2>Examples</h2>
+<h3 id="cycle-consistency">Cycle Consistency</h3>
+
+<img data-src="Media/CycleGAN_cycle.jpeg" class="r-stretch quarto-figure-center"><p class="caption">Cycle Consistency (Transforming from A →B → A).</p></section>
+<section id="examples-3" class="slide level2">
+<h2>Examples</h2>
+<h3 id="identity">Identity</h3>
+
+<img data-src="Media/CycleGAN_identity.jpeg" class="r-stretch quarto-figure-center"><p class="caption">Identity (Transforming from A → A).</p></section>
 <section id="how-are-we-testing-our-approach" class="slide level2">
 <h2>How are we testing our approach</h2>
 <ol type="1">
@@ -654,16 +810,51 @@ GDN(inputs) = \frac{inputs}{\sqrt{\mathrm{conv}(inputs^2)}}
 <aside><ol class="aside-footnotes"><li id="fn1" role="doc-endnote"><p>The evaluation metric is the IoU (Intersection over Unit).</p></li></ol></aside></section>
 <section id="our-results-so-far" class="slide level2">
 <h2>Our results so far</h2>
-<p>Our current method doesn’t improve the results:</p>
-<ul>
-<li>Without CycleGAN: <span class="math inline">\(IoU = 0.40\)</span>.</li>
-<li>With CycleGAN: <span class="math inline">\(IoU = 0.34\)</span>.</li>
-</ul>
-
-<img data-src="Media/CycleGAN_results.jpeg" class="r-stretch quarto-figure-center"><p class="caption">Sample results with and without applying the CycleGAN’s transformation.</p></section>
+<p>Our current method doesn’t improve the results <sup>1</sup>:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="Media/CycleGAN_results_alex.png"></p>
+<p></p><figcaption aria-hidden="true">Sample results with and without applying the CycleGAN’s transformation and NST. Courtesy of Alex Pastor (TFG student).</figcaption><p></p>
+</figure>
+</div>
+<aside><ol class="aside-footnotes"><li id="fn2" role="doc-endnote"><p>But it’s on par with NST!</p></li></ol></aside></section>
 <section id="what-others-have-achieved" class="slide level2">
 <h2>What others have achieved</h2>
 <p><a href="https://isl-org.github.io/PhotorealismEnhancement/" data-preview-link="true">Enhancing Photorealism Enhancement</a></p>
+</section>
+<section id="next-steps" class="slide level2">
+<h2>Next steps</h2>
+<div>
+<ol type="1">
+<li class="fragment">Use the labels</li>
+</ol>
+</div>
+<div class="fragment">
+<div class="cell" data-reveal="true">
+<div class="cell-output-display">
+<div>
+<p>
+</p><pre class="mermaid" data-tooltip-selector="#mermaid-tooltip-2">flowchart LR
+A[GTA] -- CycleGAN --&gt; B[CityScapes']
+B -- U-Net --&gt; D[Segmentation Mask]
+A --&gt; C[Ground Truth]
+C &lt;-- Consistency Loss --&gt;D
+</pre>
+<div id="mermaid-tooltip-2" class="mermaidTooltip">
+
+</div>
+<p></p>
+</div>
+</div>
+</div>
+<div>
+<ol start="2" type="1">
+<li class="fragment">Neural Style Transfer.</li>
+<li class="fragment">Diffusion??</li>
+<li class="fragment">Accepting ideas!</li>
+</ol>
+</div>
+</div>
 </section></section>
 <section>
 <section id="hue-cancellation-debunking-jameson-hurvich" class="title-slide slide level1 center">
@@ -678,14 +869,14 @@ GDN(inputs) = \frac{inputs}{\sqrt{\mathrm{conv}(inputs^2)}}
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="Media/hue_cancellation_initial.png"></p>
-<p></p><figcaption>Initial setup of an experiment.</figcaption><p></p>
+<p></p><figcaption aria-hidden="true">Initial setup of an experiment.</figcaption><p></p>
 </figure>
 </div>
 </div><div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="Media/hue_cancellation_final.png"></p>
-<p></p><figcaption>Final result of the experiment for an Identity Network.</figcaption><p></p>
+<p></p><figcaption aria-hidden="true">Final result of the experiment for an Identity Network.</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -701,10 +892,34 @@ GDN(inputs) = \frac{inputs}{\sqrt{\mathrm{conv}(inputs^2)}}
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="Media/hue_cancellation_results.jpeg" style="width:35.0%"></p>
-<p></p><figcaption>Our results with the Identity Network</figcaption><p></p>
+<p></p><figcaption aria-hidden="true">Our results with the Identity Network</figcaption><p></p>
 </figure>
 </div>
-<aside><ol class="aside-footnotes"><li id="fn2" role="doc-endnote"><p>Model whose output is its input, i.e.&nbsp;doesn’t do anything</p></li></ol></aside></section>
+<aside><ol class="aside-footnotes"><li id="fn3" role="doc-endnote"><p>Model whose output is its input, i.e.&nbsp;doesn’t do anything</p></li></ol></aside></section>
+<section id="how-did-we-transform-the-experiment-into-an-optimization-problem-to-be-solved-with-gradient-descent" class="slide level2">
+<h2>How did we transform the experiment into an optimization problem to be solved with gradient descent?</h2>
+<p>Each color is represented as a sum of primaries. The contribution of each primary are the optimized weights:</p>
+<p><span class="math display">\[
+Color(\lambda) = \sum_i w_i P_i
+\]</span></p>
+<div class="cell" data-reveal="true">
+<div class="cell-output-display">
+<div>
+<p>
+</p><pre class="mermaid" data-tooltip-selector="#mermaid-tooltip-3">flowchart LR
+A["Lambda (as a sum of primaries)"] --&gt; C[Measure distance]
+B[White] --&gt; C
+C --&gt; D[Calculate gradient to minimize distance]
+D -- Modify primaries' contribution --&gt; A
+</pre>
+<div id="mermaid-tooltip-3" class="mermaidTooltip">
+
+</div>
+<p></p>
+</div>
+</div>
+</div>
+</section>
 <section id="what-do-we-think-this-means" class="slide level2">
 <h2>What do we think this means?</h2>
 <p>The color coding is <strong>not</strong> done in the brain, and the experiment doesn’t provide any insight about the brain itself.</p>
@@ -927,24 +1142,6 @@ GDN(inputs) = \frac{inputs}{\sqrt{\mathrm{conv}(inputs^2)}}
     </script>
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
-      const toggleBodyColorMode = (bsSheetEl) => {
-        const mode = bsSheetEl.getAttribute("data-mode");
-        const bodyEl = window.document.querySelector("body");
-        if (mode === "dark") {
-          bodyEl.classList.add("quarto-dark");
-          bodyEl.classList.remove("quarto-light");
-        } else {
-          bodyEl.classList.add("quarto-light");
-          bodyEl.classList.remove("quarto-dark");
-        }
-      }
-      const toggleBodyColorPrimary = () => {
-        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-        if (bsSheetEl) {
-          toggleBodyColorMode(bsSheetEl);
-        }
-      }
-      toggleBodyColorPrimary();  
       const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
       tabsets.forEach(function(tabset) {
         const tabby = new Tabby('#' + tabset.id);

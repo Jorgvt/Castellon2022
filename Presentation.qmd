@@ -155,9 +155,81 @@ Placeholder
 
 # PerceptNet
 
+> Fully convolutional bio-inspired network replicating the Retina - LGN - V1 path.
+
+## Refresher
+
+Fully convolutional bio-inspired network replicating the Retina - LGN - V1 path.
+
+![PerceptNet Architecture.](Media/PerceptNet_Architecture.jpg)
+
+## Including functional forms
+
+![Functional PerceptNet Architecture.](Media/PerceptNet_Architecture_Functional.jpg)
+
 ## Ablation study
 
 ![Validation Pearson Correlation on TID2013 for different network configurations.](Media/val_loss_perceptnet_2.svg)
+
+## Filters evolution
+
+### GDN Gaussians (First GDN)
+
+::: {layout-ncol="2"}
+
+![First GDN (init)](Media/Filters_Evolution/GDNGaussian/first_init.png)
+
+![First GDN (trained)](Media/Filters_Evolution/GDNGaussian/first_last.png)
+
+:::
+
+## Filters evolution
+
+### GDN Gaussians (Second GDN)
+
+::: {layout-ncol="2"}
+
+![Second GDN (init)](Media/Filters_Evolution/GDNGaussian/second_init.png)
+
+![Second GDN (trained)](Media/Filters_Evolution/GDNGaussian/second_last.png)
+
+:::
+
+## Filters evolution
+
+### GDN Gaussians (Third GDN)
+
+::: {layout-ncol="2"}
+
+![Third GDN (init)](Media/Filters_Evolution/GDNGaussian/third_init.png)
+
+![Third GDN (trained)](Media/Filters_Evolution/GDNGaussian/third_last.png)
+
+:::
+
+## Filters evolution
+
+### GDN Gaussians (Fourth GDN)
+
+::: {layout-ncol="2"}
+
+![Fourth GDN (init)](Media/Filters_Evolution/GDNGaussian/fourth_init.png)
+
+![Fourth GDN (trained)](Media/Filters_Evolution/GDNGaussian/fourth_last.png)
+
+:::
+
+## Filters evolution
+
+### Gabor Filters
+
+::: {layout-ncol="2"}
+
+![Gabor Layer (init)](Media/Filters_Evolution/PseudoRandomGaborLast/fourth_init.png)
+
+![Gabor (trained)](Media/Filters_Evolution/PseudoRandomGaborLast/fourth_last.png)
+
+:::
 
 # Optimization problems
 
@@ -174,16 +246,26 @@ Optimize for $\mathrm{log}(\sigma)$ instead of $\sigma$.
 
 ```{python}
 #| fig-cap-location: margin
-#| fig-cap: (On the left) The log is defined for all $\mathcal{R}$. (On the right) When obtaining $\sigma$ again, it's defined positive.
+#| layout-ncol: 2
+#| fig-cap: 
+#|   - a) "The log is defined for all R."
+#|   - b) "When obtaining sigma again, it's defined positive."
 import numpy as np
 import matplotlib.pyplot as plt
 
 sigma = np.linspace(0,5,50)
-fig, axes = plt.subplots(1, 2, figsize=(9,2))
-axes[0].plot(sigma, np.log(sigma))
-axes[0].set_xlabel("$\sigma$")
-axes[0].set_ylabel("$\mathrm{log}\sigma$")
-axes[1].plot(np.log(sigma), np.exp(np.log(sigma)))
+# fig, axes = plt.subplots(1, 2, figsize=(9,2))
+
+plt.figure(figsize=(5,2))
+plt.plot(sigma, np.log(sigma))
+plt.xlabel("$\sigma$")
+plt.ylabel("$\mathrm{log}\sigma$")
+plt.show()
+
+plt.figure(figsize=(5,2))
+plt.plot(np.log(sigma), np.exp(np.log(sigma)))
+plt.xlabel("$\mathrm{log}\sigma$")
+plt.ylabel("$\sigma$")
 plt.show()
 ```
 
@@ -222,7 +304,7 @@ def call(self,
 
 ## What is a CycleGAN and how does it work?
 
-![CycleGAN diagram.](Media/CycleGAN_Diagram.png)
+![CycleGAN diagram. Identity Loss is not shown but has to be added as well.](Media/CycleGAN_Diagram.png)
 
 ## Examples
 
@@ -244,6 +326,22 @@ def call(self,
 
 [HuggingFace Space](https://huggingface.co/spaces/Jorgvt/CycleGAN-GTA-REAL){preview-link="true"}
 
+## Examples
+
+### Space Transformation
+![Space Transformation (Transforming from A &harr; B).](Media/CycleGAN_space_transform.jpeg)
+
+## Examples
+
+### Cycle Consistency
+![Cycle Consistency (Transforming from A &rarr;B &rarr; A).](Media/CycleGAN_cycle.jpeg)
+
+## Examples
+
+### Identity
+![Identity (Transforming from A &rarr; A).](Media/CycleGAN_identity.jpeg)
+
+
 ## How are we testing our approach
 
 1. Train a CycleGAN to transform between CityScapes and GTA.
@@ -253,16 +351,35 @@ def call(self,
 
 ## Our results so far
 
-Our current method doesn't improve the results:
+Our current method doesn't improve the results ^[But it's on par with NST!]:
 
-- Without CycleGAN: $IoU = 0.40$.
-- With CycleGAN: $IoU = 0.34$.
-
-![Sample results with and without applying the CycleGAN's transformation.](Media/CycleGAN_results.jpeg)
+![Sample results with and without applying the CycleGAN's transformation and NST. Courtesy of Alex Pastor (TFG student).](Media/CycleGAN_results_alex.png)
 
 ## What others have achieved
 
 [Enhancing Photorealism Enhancement](https://isl-org.github.io/PhotorealismEnhancement/){preview-link="true"}
+
+## Next steps
+
+::: {.incremental}
+1. Use the labels
+:::
+
+. . .
+
+```{mermaid}
+flowchart LR
+A[GTA] -- CycleGAN --> B[CityScapes']
+B -- U-Net --> D[Segmentation Mask]
+A --> C[Ground Truth]
+C <-- Consistency Loss -->D
+```
+
+::: {.incremental}
+2. Neural Style Transfer.
+3. Diffusion??
+4. Accepting ideas!
+:::
 
 # Hue cancellation: Debunking Jameson-Hurvich
 
@@ -291,6 +408,21 @@ Usually considered as the first psychophysical quantification on opponent color 
 Using an Identity Network ^[Model whose output is its input, i.e. doesn't do anything] we were able to obtain the same results.
 
 ![Our results with the Identity Network](Media/hue_cancellation_results.jpeg){width="35%" fig-cap-location="margin"}
+
+## How did we transform the experiment into an optimization problem to be solved with gradient descent?
+
+Each color is represented as a sum of primaries. The contribution of each primary are the optimized weights:
+$$
+Color(\lambda) = \sum_i w_i P_i
+$$
+
+```{mermaid}
+flowchart LR
+A["Lambda (as a sum of primaries)"] --> C[Measure distance]
+B[White] --> C
+C --> D[Calculate gradient to minimize distance]
+D -- Modify primaries' contribution --> A
+```
 
 ## What do we think this means?
 
