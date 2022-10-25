@@ -351,9 +351,13 @@ def call(self,
 
 ## Our results so far
 
-Our current method doesn't improve the results ^[But it's on par with NST!]:
+Our current method doesn't improve the results ^[But it's on par with NST (According to the results of Alex, TFG student)!]:
 
 ![Sample results with and without applying the CycleGAN's transformation and NST. Courtesy of Alex Pastor (TFG student).](Media/CycleGAN_results_alex.png)
+
+::: aside
+In our own experiments, using CycleGAN gives 20% worse results.
+:::
 
 ## What others have achieved
 
